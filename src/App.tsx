@@ -3,7 +3,6 @@ import './App.css'
 
 function App() {
   const [data, setData] = useState([]);
-  const [error, setError] = useState('');
   const [form, setForm] = useState({});
 
   useEffect(() => {
@@ -11,7 +10,7 @@ function App() {
       if (res.ok) {
         res.json().then(data => setData(data.data));
       } else {
-        setError('Ошибка')
+        // setError('Ошибка')
       }
     })
   }, []);
@@ -26,11 +25,9 @@ function App() {
       .then(data => setData(data.data));
   }
 
-  const handleInput = (e, key: string) => {
+  const handleInput = (e: any, key: string) => {
     setForm({...form, [key]: e.target.value});
   }
-
-  console.log(form)
 
   return (
     <>
