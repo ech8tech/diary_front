@@ -1,0 +1,27 @@
+.date {
+  width: 100%;
+}
+
+.formItem {
+  margin-bottom: 16px;
+
+  &__full {
+    width: 100%;
+  }
+
+  &__group {
+    width: 30%;
+  }
+
+  &__half {
+    width: 50%;
+  }
+}
+
+.radio {
+  width: 100%;
+  
+  label {
+    width: 33.33%;
+  }
+}

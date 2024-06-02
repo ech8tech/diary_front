@@ -1,0 +1,85 @@
+body, html {
+  height: 100%;
+}
+
+body {
+  background-color: black;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+
+  &::before {
+    content: '';
+    background-image: url(https://media4.giphy.com/media/xT39CVl39xnWmoyvjW/giphy.gif?cid=6c09b952nugyz62sfhe4lvqunsm6hikaakn1064y4t3jnje7&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g);
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+    opacity: .1;
+    pointer-events: none;
+    z-index: 99999999;
+  }
+}
+
+.main {
+  padding: 60px 40px;
+
+  .panel {
+    padding: 20px 0;
+  }
+
+  .top {
+    margin-bottom: 20px;
+  }
+
+  .title {
+    margin: 0;
+  }
+}
+
+.sticky {
+  background-color: black;
+  z-index: 20;
+}
+
+.period {
+  margin-bottom: 20px;
+
+  .title {
+    margin: 0;
+    min-width: 70px;
+  }
+
+  .input {
+    width: 250px;
+  }
+}
+
+.search {
+  margin-bottom: 0;
+
+  @extend .period
+}
+
+.card {
+  margin-bottom: 20px;
+
+  .tag {
+    width: 100%;
+    text-align: center;
+    margin-right: 0;
+  }
+}
+
+.record {
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+

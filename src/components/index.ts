@@ -1,0 +1,1 @@
+export { ModalAddRecord } from './modalAddRecord/ModalAddRecord'
