@@ -5,6 +5,7 @@ import styles from './ModalAddRecord.module.scss'
 import {emotions, emotionGroups, weights} from "../../consts";
 import {adaptData, transformData} from "../../utils";
 import {useEffect} from "react";
+import {apiBasePath} from "../../api";
 
 const { TextArea } = Input;
 
@@ -20,8 +21,6 @@ export function ModalAddRecord({ isOpen, onClose, onOk }: ModalAddRecordProps) {
   const [form] = Form.useForm<FormInstance<FormState>>();
   const emotionGroup = Form.useWatch('emotionGroup', form);
 
-  console.log(dayjs().format('HH:mm:ss'));
-
   useEffect(() => {
     form.resetFields(['date']);
   }, [isOpen]);
@@ -31,9 +30,7 @@ export function ModalAddRecord({ isOpen, onClose, onOk }: ModalAddRecordProps) {
   }, [emotionGroup]);
 
   const handleAdd = () => {
-    console.log(form.getFieldsValue(true));
-
-    fetch('api/add', {
+    fetch(`${apiBasePath}/add`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: transformData(form.getFieldsValue(true))
@@ -68,26 +65,26 @@ export function ModalAddRecord({ isOpen, onClose, onOk }: ModalAddRecordProps) {
         </Form.Item>
 
         <Form.Item className={styles.formItem} label="Ситуация/Триггер (Когда? Где? С кем? Что произошло?)" name="trigger">
-          <TextArea autoSize={{ minRows: 1, maxRows: 3 }} />
+          <TextArea placeholder="Опишите ситуацию" autoSize={{ minRows: 1, maxRows: 3 }} />
         </Form.Item>
 
         <Flex align="flex-start" gap={16}>
           <Form.Item className={styles.formItem__group} label="Группа" name="emotionGroup">
-            <Select options={emotionGroups} />
+            <Select placeholder="Выбор группы" options={emotionGroups} />
           </Form.Item>
 
           <Form.Item className={styles.formItem__full} label="Эмоция" name="emotions">
             {/* @ts-ignore */}
-            <Select options={emotions[emotionGroup]} mode="multiple" maxTagCount={2} />
+            <Select placeholder="Выбор эмоции" options={emotions[emotionGroup]} mode="multiple" maxTagCount={2} />
           </Form.Item>
         </Flex>
 
         <Form.Item className={styles.formItem} label="Мысли (Какие мысли проносились у Вас в голове в этой ситуации? Не анализируйте их, просто запишите" name="thoughts">
-          <TextArea autoSize={{ minRows: 1, maxRows: 3 }} />
+          <TextArea placeholder="Опишите ход мыслей" autoSize={{ minRows: 1, maxRows: 3 }} />
         </Form.Item>
 
         <Form.Item className={styles.formItem} label="Поведение (Что Вы стали делать сразу после этого?)" name="behavior">
-          <TextArea autoSize={{ minRows: 1, maxRows: 3 }} />
+          <TextArea placeholder="Опишите поведение" autoSize={{ minRows: 1, maxRows: 3 }} />
         </Form.Item>
 
         <Form.Item className={styles.formItem} label="Насколько волнует ситуация?" name="weight">

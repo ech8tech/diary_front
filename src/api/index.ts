@@ -1,0 +1,1 @@
+export const apiBasePath = import.meta.env.VITE_MODE === 'dev' ? 'api' : import.meta.env.VITE_API_URL;

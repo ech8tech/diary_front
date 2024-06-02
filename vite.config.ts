@@ -1,16 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), visualizer()],
   server: {
     port: 5173,
     strictPort: false,
-    open: '/index.html',
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
