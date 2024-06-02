@@ -84,6 +84,7 @@ function App() {
 
                 {records.map(record => {
                   const tagParams = weights.find(weight => weight.value === record.weight);
+                  const emotionsFormatted = formatEmotions(record.emotions, record.emotionGroup);
 
                   return (
                     <fieldset key={record.id} className={styles.record}>
@@ -92,7 +93,7 @@ function App() {
                       <Flex justify="space-between" gap={32}>
                         <div>
                           <div>Триггер - {record.trigger}</div>
-                          <div>Эмоция - {formatEmotions(record.emotions, record.emotionGroup).join(', ')}</div>
+                          <div>Эмоция - {emotionsFormatted}</div>
                           <div>Мысли - {record.thoughts}</div>
                           <div>Поведение - {record.behavior}</div>
                         </div>

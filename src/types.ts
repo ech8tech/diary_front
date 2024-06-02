@@ -1,10 +1,12 @@
 import { Dayjs } from "dayjs";
 
+import {emotions} from "./consts";
+
 export type FormState = {
   date?: Dayjs,
   trigger?: string,
   emotions?: string[],
-  emotionGroup: string,
+  emotionGroup: keyof typeof emotions,
   thoughts?: string,
   behavior?: string
 }
