@@ -1,23 +1,46 @@
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
 import {Affix, Button, DatePicker, Flex, Input, Tag} from "antd";
-import { DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import FieldTimeOutlined from "@ant-design/icons/FieldTimeOutlined";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import EditOutlined from "@ant-design/icons/EditOutlined";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
+
+import isoWeek from 'dayjs/plugin/isoWeek';
 
 import { Records } from "./types";
 import { adaptData, formatEmotions, keyBy, sortBy, sortLocalCompare } from "./utils";
-import styles from './App.module.scss'
 import { ModalAddRecord } from "./components";
 import {weights} from "./consts";
+import styles from './App.module.scss'
 
 const { RangePicker } = DatePicker;
+
+dayjs.extend(isoWeek);
+
+// dayjs().locale('en').weekday(0);
+
+function gesturestartEvent(event: Event) {
+  event.preventDefault();
+}
+
+type PeriodType = 'today' | 'week' | 'month' | 'year';
+
+const selectDate: Record<PeriodType, [Dayjs, Dayjs]> = {
+  today: [dayjs(), dayjs()],
+  week: [dayjs().startOf('isoWeek'), dayjs()],
+  month: [dayjs().startOf('month'), dayjs()],
+  year: [dayjs().startOf('year'), dayjs()]
+}
 
 function App() {
   const [data, setData] = useState<Records>({});
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [period, setPeriod] = useState<[Dayjs, Dayjs]>(selectDate.week);
 
   useEffect(() => {
+    document.addEventListener('gesturestart', gesturestartEvent, { passive: false });
+
     fetch('/api').then(res => {
       if (res.ok) {
         res.json().then(data => setData(adaptData(data.data)));
@@ -25,6 +48,10 @@ function App() {
         console.log('Ошибка')
       }
     })
+
+    return () => {
+      document.removeEventListener('gesturestart', gesturestartEvent)
+    }
   }, []);
 
   const handleOpenModal = () => setIsOpen(true);
@@ -37,6 +64,10 @@ function App() {
     })
       .then(res => res.json())
       .then(data => setData(adaptData(data.data)))
+  }
+
+  const handleSetPeriod = (periodType: PeriodType) => {
+    setPeriod(selectDate[periodType])
   }
 
   return (
@@ -53,13 +84,13 @@ function App() {
             <Flex className={styles.period} justify="space-between" align="center" gap={20} wrap="wrap">
               <Flex gap={16} align="center">
                 <h3 className={styles.title}>Период</h3>
-                <RangePicker defaultValue={[dayjs(), dayjs()]} className={styles.input} placeholder={['Дата От', 'Дата По']}/>
+                <RangePicker defaultValue={selectDate.week} value={period} className={styles.input} placeholder={['Дата От', 'Дата По']}/>
               </Flex>
               <Flex gap={16}>
-                <Button icon={<FieldTimeOutlined />}>За сегодня</Button>
-                <Button icon={<FieldTimeOutlined />}>За неделю</Button>
-                <Button icon={<FieldTimeOutlined />}>За месяц</Button>
-                <Button icon={<FieldTimeOutlined />}>За все время</Button>
+                <Button icon={<FieldTimeOutlined />} onClick={() => handleSetPeriod('today')}>За сегодня</Button>
+                <Button icon={<FieldTimeOutlined />} onClick={() => handleSetPeriod('week')}>За неделю</Button>
+                <Button icon={<FieldTimeOutlined />} onClick={() => handleSetPeriod('month')}>За месяц</Button>
+                <Button icon={<FieldTimeOutlined />} onClick={() => handleSetPeriod('year')}>За год</Button>
               </Flex>
             </Flex>
 
